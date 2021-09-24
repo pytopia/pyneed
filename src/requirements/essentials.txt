@@ -1,0 +1,7 @@
+seaborn
+numpy
+jupyterlab
+jupytext
+coloredlogs
+tqdm
+loguru
