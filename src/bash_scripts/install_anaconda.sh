@@ -12,6 +12,7 @@ fi
 echo "Preparing shell..."
 eval "$(~/anaconda3/bin/conda shell.$0 hook)"
 conda init
+source ~/.$0rc
 
 echo "Updating conda..."
 conda update -y -n base -c defaults conda
@@ -19,7 +20,6 @@ conda config --set auto_activate_base false
 
 echo "Create python 3.7 environment as py37..."
 conda create -yn py37 python=3.7
-source ~/anaconda3/etc/profile.d/conda.sh
 
 cd ~
 echo "Done!"
