@@ -9,10 +9,12 @@ then
     rm -f anaconda.sh
 fi
 
+
+export SHELL_NAME=$(basename $SHELL)
 echo "Preparing shell..."
-eval "$(~/anaconda3/bin/conda shell.$0 hook)"
+eval "$(~/anaconda3/bin/conda shell.$SHELL_NAME hook)"
 conda init
-source ~/.$0rc
+source ~/.$(SHELL_NAME)rc
 
 echo "Updating conda..."
 conda update -y -n base -c defaults conda
