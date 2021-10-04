@@ -10,7 +10,7 @@ then
 fi
 
 echo "Preparing shell..."
-eval "$(/Users/jsmith/anaconda/bin/conda shell.YOUR_SHELL_NAME hook)"
+eval "$(~/anaconda3/bin/conda shell.$0 hook)"
 conda init
 
 echo "Updating conda..."
