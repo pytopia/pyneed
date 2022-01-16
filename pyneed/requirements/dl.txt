@@ -1,0 +1,8 @@
+torch
+torchvision
+torchaudio
+pytorch-ignite
+wandb
+opencv-python
+scikit-image
+madgrad
