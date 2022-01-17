@@ -1,0 +1,5 @@
+requests-html==0.10.0
+loguru==0.5.3
+psycopg2==2.9.3
+boto3==1.20.37
+tqdm==4.62.3
