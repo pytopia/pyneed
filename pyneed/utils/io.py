@@ -6,10 +6,12 @@ import tempfile
 import zipfile
 from io import BytesIO as IOReader
 from pathlib import Path
-from typing import Any, List, Text, Union
+from typing import Any, Dict, List, Text, Union, Iterable
+import jsonlines
 
 from pyneed.exceptions import FileIOException
 
+JSONType = Union[str, int, float, bool, None, Dict[str, Any], List[Any]]
 DEFAULT_ENCODING = 'utf-8'
 
 
@@ -31,10 +33,10 @@ def write_text_file(
         file.write(content)
 
 
-def read_file(filename: Union[Text, Path], encoding: Text = DEFAULT_ENCODING) -> Any:
+def read_file(filepath: Union[Text, Path], encoding: Text = DEFAULT_ENCODING) -> Any:
     """Read text from a file."""
 
-    filepath = Path(filename)
+    filepath = Path(filepath)
     try:
         with open(filepath, encoding=encoding) as f:
             return f.read()
@@ -51,15 +53,53 @@ def read_file(filename: Union[Text, Path], encoding: Text = DEFAULT_ENCODING) ->
         )
 
 
-def read_json_file(filename: Union[Text, Path]) -> Any:
+def read_json_file(filepath: Union[Text, Path]) -> JSONType:
     """Read json from a file."""
-    filepath = Path(filename)
+    filepath = Path(filepath)
     content = read_file(filepath)
     try:
         return json.loads(content)
     except ValueError as e:
         raise FileIOException(
             f"Failed to read json from '{filepath.resolve()}'. Error: {e}"
+        )
+
+
+def write_json_file(json_data: JSONType, filepath: Union[Text, Path]) -> None:
+    """Write json data to a file."""
+    filepath = Path(filepath)
+    try:
+        with open(filepath, "w") as f:
+            json.dump(json_data, f)
+    except ValueError as e:
+        raise FileIOException(
+            f"Failed to write json data to '{filepath.resolve()}'. Error: {e}"
+        )
+
+
+def read_jsonl_file(filepath: Union[Text, Path]) -> JSONType:
+    """Read json from a file."""
+    filepath = Path(filepath)
+    try:
+        with jsonlines.open(filepath) as reader:
+            for obj in reader:
+                yield obj
+    except ValueError as e:
+        raise FileIOException(
+            f"Failed to read json from '{filepath.resolve()}'. Error: {e}"
+        )
+
+
+def write_json_file(json_data: Iterable, filepath: Union[Text, Path]) -> None:
+    """Write json data to a file."""
+    filepath = Path(filepath)
+    try:
+        with jsonlines.open(filepath, mode='w') as writer:
+            for obj in json_data:
+                writer.write(obj)
+    except ValueError as e:
+        raise FileIOException(
+            f"Failed to write json data to '{filepath.resolve()}'. Error: {e}"
         )
 
 
