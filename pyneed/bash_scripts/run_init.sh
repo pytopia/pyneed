@@ -1,9 +1,28 @@
+#!/bin/bash
 clear
-date
-echo -e "Hey $USER;\n\tYour current shell is:  $SHELL "
-echo
-read -p "Press [Enter] key to start run_init.sh . . ."
-export PYTHONPATH=${PWD}
-echo -e "\vYour PYTHONPATH variable is :\n$PYTHONPATH"
+
+echo "=============== Hey $USER ==============="
 echo
 
+echo " - > Your bash environment is initialize"
+echo
+
+conda init
+
+echo
+echo "* * * Enter your desired conda environment to activatation : "
+read condaEnv
+echo
+
+conda activate $condaEnv
+
+export PYTHONPATH=${PWD}
+
+echo " - > Your \"PYTHONPATH\" variable is  $PYTHONPATH"
+echo
+
+echo " - > current time : `date `"
+echo
+
+echo "=============== Done ! ==============="
+echo
